@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Create employee account · PeopleDesk{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Employee Sign Up</p>
+    <h1 class="display-6 fw-bold">Create your account</h1>
+    <p class="lead text-secondary">Add your details to get started with the employee portal.</p>
+</header>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+        <section class="card">
+            <div class="card-body p-4 p-lg-5">
+                <h2 class="h3 fw-bold">Employee details</h2>
+                <p class="text-secondary mb-4">Complete the form to create your account.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="first-name" class="form-label">First name</label>
+                            <input id="first-name" class="form-control" type="text" name="first_name" autocomplete="given-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last-name" class="form-label">Last name</label>
+                            <input id="last-name" class="form-control" type="text" name="last_name" autocomplete="family-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="employee-email" class="form-label">Work email</label>
+                            <input id="employee-email" class="form-control" type="email" name="email" autocomplete="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="employee-gender" class="form-label">Gender</label>
+                            <select id="employee-gender" class="form-select" name="gender" required>
+                                <option value="" selected disabled>Select an option</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="department" class="form-label">Department</label>
+                            <input id="department" class="form-control" type="text" name="department" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="designation" class="form-label">Designation</label>
+                            <input id="designation" class="form-control" type="text" name="designation" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date-of-birth" class="form-label">Date of birth</label>
+                            <input id="date-of-birth" class="form-control" type="date" name="date_of_birth" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="salary" class="form-label">Salary</label>
+                            <input id="salary" class="form-control" type="number" name="salary" min="0" step="0.01" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="employee-password" class="form-label">Password</label>
+                            <input id="employee-password" class="form-control" type="password" name="password" autocomplete="new-password" required>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Create account</button>
+                        <a href="{% url 'employee_login' %}" class="btn btn-outline-secondary">Back to sign in</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

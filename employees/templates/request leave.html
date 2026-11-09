@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Leave requests · Employee Management System{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Time away</p>
+    <h1 class="display-6 fw-bold">Leave requests</h1>
+    <p class="lead text-secondary">Request time off and keep track of your requests.</p>
+</header>
+
+<section class="card mb-4">
+    <div class="card-body p-4 p-lg-5">
+        <h2 class="h3 fw-bold">New request</h2>
+        <p class="text-secondary mb-4">Share the dates and a short reason.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-12">
+                    <label for="leave-reason" class="form-label">Reason</label>
+                    <input id="leave-reason" class="form-control" type="text" name="reason" placeholder="Add a short reason" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="leave-from" class="form-label">From</label>
+                    <input id="leave-from" class="form-control" type="date" name="from_date" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="leave-to" class="form-label">To</label>
+                    <input id="leave-to" class="form-control" type="date" name="to_date" required>
+                </div>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary mt-4">Submit request</button>
+        </form>
+    </div>
+</section>
+
+<div class="d-flex align-items-end justify-content-between mb-3">
+    <div><p class="text-uppercase text-secondary small fw-semibold mb-2">Your time away</p><h2 class="h3 fw-bold mb-0">Request history</h2></div>
+    <span class="badge text-bg-secondary">{{ leaves|length }} total</span>
+</div>
+<div class="row g-3">
+    {% for leave in leaves %}
+    <div class="col-12 col-lg-6">
+        <article class="card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                    <h3 class="h5 fw-bold">{{ leave.reason }}</h3>
+                    {% if leave.status == "Pending" %}
+                        <span class="badge text-bg-warning">{{ leave.status }}</span>
+                    {% elif leave.status == "Approved" %}
+                        <span class="badge text-bg-success">{{ leave.status }}</span>
+                    {% else %}
+                        <span class="badge text-bg-danger">{{ leave.status }}</span>
+                    {% endif %}
+                </div>
+                <p class="text-secondary mb-0">{{ leave.from_date|date:"d M Y" }} – {{ leave.to_date|date:"d M Y" }}</p>
+            </div>
+        </article>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card"><div class="card-body py-5 text-center">
+            <h3 class="h5 fw-bold">No leave requests yet</h3>
+            <p class="text-secondary mb-0">Requests you submit will show up here.</p>
+        </div></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

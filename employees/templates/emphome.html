@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}My dashboard · Employee Management System{% endblock %}
+{% block content %}
+<header class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4 mb-lg-5">
+    <div>
+        <p class="text-uppercase text-secondary small fw-semibold mb-2">Employee workspace</p>
+        <h1 class="display-6 fw-bold">Welcome back, {{ request.user.first_name|default:request.user.get_username }}</h1>
+        <p class="lead text-secondary mb-0">Here are the shortcuts to keep your day on.</p>
+    </div>
+    <span class="badge rounded-pill text-bg-secondary">{{ request.user.get_username }}</span>
+</header>
+
+<section class="card mb-4">
+    <div class="card-body p-4 p-lg-5">
+        <p class="text-uppercase text-secondary small fw-semibold mb-2">Your day, at a glance</p>
+        <h2 class="h3 fw-bold">Make today count.</h2>
+        <p class="text-secondary">Mark your attendance, review your leave, or hear what's new.</p>
+        <a href="{% url 'mark_attendance_page' %}" class="btn btn-primary">Mark attendance</a>
+    </div>
+</section>
+
+<div class="row g-3">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h4 fw-bold">Attendance</h2>
+            <p class="text-secondary">Record today’s status and keep track of your attendance history.</p>
+            <a href="{% url 'mark_attendance_page' %}" class="btn btn-outline-primary">Open attendance</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h4 fw-bold">Leave requests</h2>
+            <p class="text-secondary">Submit a new request and check the status of existing ones.</p>
+            <a href="{% url 'leave_request' %}" class="btn btn-outline-primary">View requests</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h4 fw-bold">Announcements</h2>
+            <p class="text-secondary">Stay in the touch with updates from your company.</p>
+            <a href="{% url 'announcements' %}" class="btn btn-outline-primary">Read updates</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

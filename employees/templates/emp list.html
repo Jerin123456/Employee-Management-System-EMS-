@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Employees · Employee Management System{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">People directory</p>
+    <h1 class="display-6 fw-bold">Employees</h1>
+    <p class="lead text-secondary">A directory of the people on your team.</p>
+</header>
+
+<section class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>{{ employee.designation }}</td>
+                    <td>₹ {{ employee.salary }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="py-5 text-center text-secondary">No employees found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Employee sign in · Employee Management System{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Employee portal</p>
+    <h1 class="display-6 fw-bold">Welcome back</h1>
+    <p class="lead text-secondary">Sign in with your work email to continue to your workspace.</p>
+</header>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <section class="card">
+            <div class="card-body p-4 p-lg-5">
+                <h2 class="h3 fw-bold">Sign in</h2>
+                <p class="text-secondary mb-4">Enter your account details below.</p>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">{{ error }}</div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next|default:'' }}">
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Work email</label>
+                        <input id="login-email" class="form-control" type="email" name="email" autocomplete="username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input id="login-password" class="form-control" type="password" name="password" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                </form>
+                <p class="text-center text-secondary small mt-4 mb-0">
+                    New to the team? <a href="{% url 'add_employee' %}">Create an employee account</a>
+                </p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

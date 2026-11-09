@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Mark attendance · PeopleDesk{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Daily check-in</p>
+    <h1 class="display-6 fw-bold">Today’s attendance</h1>
+    <p class="lead text-secondary">Let your team know whether you’re present today.</p>
+</header>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <section class="card">
+            <div class="card-body p-4 p-lg-5 text-center">
+                <p class="text-uppercase text-secondary small fw-semibold mb-2">Attendance date</p>
+                <h2 class="h3 fw-bold">{% now "l, d F Y" %}</h2>
+                <p class="text-secondary mb-4">Choose your status for today.</p>
+                <div class="row justify-content-center g-3">
+                    <div class="col-12 col-sm-5">
+                        <form method="post" action="{% url 'mark_attendance' 'Present' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 py-3">Present</button>
+                        </form>
+                    </div>
+                    <div class="col-12 col-sm-5">
+                        <form method="post" action="{% url 'mark_attendance' 'Absent' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger w-100 py-3">Absent</button>
+                        </form>
+                    </div>
+                </div>
+                <a href="{% url 'attendance_history' %}" class="btn btn-link mt-3">View attendance history</a>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

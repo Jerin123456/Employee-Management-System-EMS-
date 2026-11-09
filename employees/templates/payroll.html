@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Payroll · Employee Management System{% endblock %}
+{% block content %}
+<header class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+    <div>
+        <p class="text-uppercase text-secondary small fw-semibold mb-2">People operations · {{ current_month|date:"F Y" }}</p>
+        <h1 class="display-6 fw-bold">Payroll</h1>
+        <p class="lead text-secondary mb-0">{% if can_manage_payroll %}Track monthly pay, deductions, and payment status.{% else %}View your pay, deductions, and payment status.{% endif %}</p>
+    </div>
+</header>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success" role="status">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<section class="row g-3 mb-4" aria-label="Payroll summary for {{ current_month|date:'F Y' }}">
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Net payroll</h2>
+            <p class="h3 fw-bold mb-0">{{ monthly_net|floatformat:2 }}</p>
+            <span class="small text-secondary">{{ current_month|date:"F Y" }}</span>
+        </div></div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Paid</h2>
+            <p class="h3 fw-bold text-success mb-0">{{ paid_net|floatformat:2 }}</p>
+            <span class="small text-secondary">Net amount paid</span>
+        </div></div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Unpaid</h2>
+            <p class="h3 fw-bold text-warning mb-0">{{ outstanding_net|floatformat:2 }}</p>
+            <span class="small text-secondary">Net amount outstanding</span>
+        </div></div>
+    </div>
+</section>
+
+{% if can_manage_payroll %}
+    <section class="card mb-4">
+        <div class="card-body p-4">
+            <h2 class="h4 fw-bold mb-3">Add payroll record</h2>
+            <form method="post" class="row g-3">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="col-12"><div class="alert alert-danger mb-0">{{ form.non_field_errors }}</div></div>
+                {% endif %}
+                {% for field in form %}
+                    <div class="col-md-6 col-xl-4">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Save payroll</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endif %}
+
+<section class="card">
+    <div class="card-body p-0">
+        <div class="p-4 pb-0">
+            <h2 class="h4 fw-bold">Payroll history</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Pay period</th>
+                        <th scope="col">Gross</th>
+                        <th scope="col">Deductions</th>
+                        <th scope="col">Net pay</th>
+                        <th scope="col">Payment date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td>{{ record.employee.first_name }} {{ record.employee.last_name }}</td>
+                            <td>{{ record.pay_period|date:"F Y" }}</td>
+                            <td>{{ record.gross_pay|floatformat:2 }}</td>
+                            <td>{{ record.deductions|floatformat:2 }}</td>
+                            <td class="fw-semibold">{{ record.net_pay|floatformat:2 }}</td>
+                            <td>{{ record.payment_date|date:"d M Y"|default:"—" }}</td>
+                            <td>
+                                {% if record.status == "Paid" %}
+                                    <span class="badge text-bg-success">Paid</span>
+                                {% else %}
+                                    <span class="badge text-bg-warning">Unpaid</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if can_manage_payroll and record.status == "Unpaid" %}
+                                    <form method="post" class="m-0">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="mark_paid">
+                                        <input type="hidden" name="payroll_id" value="{{ record.pk }}">
+                                        <button class="btn btn-sm btn-outline-success text-nowrap" type="submit">Mark paid</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td class="text-center text-secondary py-4" colspan="8">No payroll records available yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

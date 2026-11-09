@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Announcements · Employee Management System{% endblock %}
+{% block content %}
+<header class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Stay Updated</p>
+    <h1 class="display-6 fw-bold">Announcements</h1>
+    <p class="lead text-secondary">The latest news and updates from your organization.</p>
+</header>
+
+<div class="row g-3">
+    {% for announcement in announcements %}
+    <div class="col-12">
+        <article class="card">
+            <div class="card-body p-4">
+                <h2 class="h4 fw-bold">{{ announcement.title }}</h2>
+                <p class="text-secondary mb-0">{{ announcement.message|linebreaksbr }}</p>
+                {% if announcement.created_at %}
+                    <p class="small text-secondary mt-3 mb-0">{{ announcement.created_at|date:"d M Y" }}</p>
+                {% endif %}
+            </div>
+        </article>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card"><div class="card-body py-5 text-center">
+            <h2 class="h5 fw-bold">Nothing new right now</h2>
+            <p class="text-secondary mb-0">New announcements will appear here.</p>
+        </div></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

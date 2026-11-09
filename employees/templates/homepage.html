@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Home · PeopleDesk{% endblock %}
+{% block content %}
+<header class="mb-4 mb-lg-5">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">People operations · {{ today|date:"l, d F Y" }}</p>
+    <h1 class="display-5 fw-bold">A portal to stay in touch with your organization.</h1>
+    <p class="lead text-secondary mb-0">A clear, connected workspace for your employee essentials.</p>
+</header>
+
+<section class="card mb-4 mb-lg-5">
+    <div class="card-body p-4 p-lg-5">
+        <span class="badge text-bg-primary mb-3">EMPLOYEE MANAGEMENT</span>
+        <h2 class="display-6 fw-bold">Manage your employee information and activities.</h2>
+        <p class="lead text-secondary">Sign in to manage your attendance, keep up with announcements, view payroll information, and stay on top of leave requests.</p>
+        <a href="{% url 'employee_login' %}" class="btn btn-primary btn-lg">Open employee portal</a>
+    </div>
+</section>
+
+<div class="row g-3 mb-4 mb-lg-5">
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Team members</h2>
+            <p class="display-6 fw-bold mb-0">{{ total_employees }}</p>
+        </div></div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Departments</h2>
+            <p class="display-6 fw-bold mb-0">{{ total_departments }}</p>
+        </div></div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6 text-secondary">Today</h2>
+            <p class="h3 fw-bold mb-0">{{ today|date:"d M Y" }}</p>
+        </div></div>
+    </div>
+</div>
+
+<h2 class="h3 fw-bold mb-3">Your workspace</h2>
+<div class="row g-3">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h5 fw-bold">Employee portal</h3>
+            <p class="text-secondary">Sign in to view your dashboard and employee tools.</p>
+            <a href="{% url 'employee_login' %}" class="btn btn-outline-primary">Sign in</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h5 fw-bold">Administration</h3>
+            <p class="text-secondary">Open the admin area to manage the system.</p>
+            <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary">Open admin</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}
